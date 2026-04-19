@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV ATS Generator — Bacotan Workers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#4682B4;
+  --blue-dark:#2f5f8a;
+  --blue-light:#e8f0f8;
+  --yellow:#C9FD06;
+  --yellow-dark:#a0c900;
+  --ivory:#FEFCFF;
+  --bg:#f4f7fb;
+  --surface:#FEFCFF;
+  --border:#d0dce8;
+  --text:#1a2533;
+  --muted:#5a6e82;
+  --red:#d93025;
+  --radius:12px;
+  --radius-sm:7px;
+  --font:'Rubik',system-ui,sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+header{background:var(--blue);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(70,130,180,.25)}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-mark{width:40px;height:40px;background:var(--yellow);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.logo-text .brand-name{font-size:15px;font-weight:700;color:#fff;letter-spacing:.01em;line-height:1.2}
+.logo-text .brand-sub{font-size:10px;color:rgba(255,255,255,.75);font-weight:400;letter-spacing:.04em}
+.ig-link{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.85);font-size:12px;text-decoration:none;transition:color .2s}
+.ig-link:hover{color:#fff}
+.ig-link svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
+
+/* LAYOUT */
+.container{max-width:800px;margin:0 auto;padding:2rem 1rem 5rem}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:2rem;padding:2.5rem 1rem 1.5rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--yellow);color:#1a2533;font-size:11px;font-weight:700;padding:5px 14px;border-radius:20px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+.hero h1{font-size:34px;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:10px}
+.hero h1 span{color:var(--blue)}
+.hero p{color:var(--muted);font-size:15px;line-height:1.6;max-width:520px;margin:0 auto}
+.hero-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.pill{background:var(--blue-light);color:var(--blue-dark);font-size:12px;font-weight:500;padding:4px 12px;border-radius:20px}
+
+/* TABS */
+.tab-nav{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:4px;gap:3px;margin-bottom:1.25rem;overflow-x:auto}
+.tab-btn{flex:1;min-width:80px;padding:9px 10px;border:none;background:none;border-radius:var(--radius-sm);font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s;font-family:var(--font)}
+.tab-btn.active{background:var(--blue);color:#fff;font-weight:700}
+.tab-btn:hover:not(.active){background:var(--blue-light);color:var(--blue)}
+.tab-section{display:none}
+.tab-section.active{display:block}
+
+/* PROGRESS */
+.progress-track{height:4px;background:var(--border);border-radius:2px;margin-bottom:1.5rem}
+.progress-bar{height:100%;background:var(--yellow);border-radius:2px;transition:width .4s ease;box-shadow:0 0 6px rgba(201,253,6,.4)}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:1rem;overflow:hidden;box-shadow:0 1px 4px rgba(70,130,180,.07)}
+.card-head{background:var(--blue);padding:11px 18px;display:flex;align-items:center;gap:8px}
+.card-head h2{font-size:12px;font-weight:700;color:#fff;letter-spacing:.08em;text-transform:uppercase}
+.head-dot{width:6px;height:6px;background:var(--yellow);border-radius:50%;flex-shrink:0}
+.card-body{padding:1.25rem 1.5rem 1rem}
+
+/* FORM */
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.field .req{color:var(--red)}
+.field .hint{font-size:11.5px;color:var(--muted);margin-bottom:5px;line-height:1.5}
+.field input,.field textarea{width:100%;font-size:13px;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:#fafafa;color:var(--text);font-family:var(--font);resize:vertical;transition:border-color .2s,box-shadow .2s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(70,130,180,.12)}
+.field textarea{min-height:90px;line-height:1.65}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.row2{grid-template-columns:1fr}}
+
+/* EXP BLOCKS */
+.exp-block{border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem;margin-bottom:.75rem;position:relative;background:#f8fbfe}
+.exp-label{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.06em}
+.remove-btn{position:absolute;top:9px;right:11px;background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer;line-height:1;transition:color .15s}
+.remove-btn:hover{color:var(--red)}
+.add-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:9px;border:1.5px dashed var(--blue);border-radius:var(--radius-sm);background:none;color:var(--blue);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:.5rem;font-family:var(--font);transition:background .15s}
+.add-btn:hover{background:var(--blue-light)}
+
+/* BUTTONS */
+.btn-row{display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;gap:8px}
+.btn-back{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 22px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font);transition:background .15s}
+.btn-back:hover{background:var(--blue-light)}
+.btn-next{background:var(--blue);color:#fff;border:none;border-radius:var(--radius-sm);padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);transition:background .15s}
+.btn-next:hover{background:var(--blue-dark)}
+.btn-generate{width:100%;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);padding:16px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .2s;margin-top:.5rem;letter-spacing:.02em;position:relative;overflow:hidden}
+.btn-generate:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(70,130,180,.35)}
+.btn-generate:disabled{background:#b0bfc8;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-generate::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,253,6,.15) 0%,transparent 60%);pointer-events:none}
+
+/* AI LIST */
+.ai-list{font-size:13px;color:var(--muted);line-height:2.1}
+.ai-list span{display:flex;align-items:center;gap:8px}
+.ai-dot{width:7px;height:7px;background:var(--yellow);border-radius:50%;flex-shrink:0;border:1.5px solid var(--yellow-dark)}
+
+/* RESULT */
+.result-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:1rem;box-shadow:0 2px 12px rgba(70,130,180,.1)}
+.result-toolbar{background:var(--blue);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.result-toolbar .rlabel{font-size:13px;font-weight:700;color:#fff}
+.tbns{display:flex;gap:8px}
+.copy-btn{background:var(--yellow);color:var(--text);border:none;border-radius:var(--radius-sm);padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);transition:background .15s}
+.copy-btn:hover{background:var(--yellow-dark)}
+.dl-btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:var(--radius-sm);padding:7px 16px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font);transition:background .15s}
+.dl-btn:hover{background:rgba(255,255,255,.25)}
+.result-body{padding:1.5rem;white-space:pre-wrap;font-size:13px;line-height:1.9;color:var(--text);font-family:'Courier New',monospace;max-height:640px;overflow-y:auto}
+.result-note{text-align:center;font-size:11px;color:var(--muted);padding:0 1rem 1rem}
+
+/* LOADING */
+.loading-wrap{padding:2.5rem;text-align:center}
+.dots{display:flex;gap:7px;align-items:center;justify-content:center;margin-bottom:12px}
+.dot{width:10px;height:10px;border-radius:50%;animation:bnc 1s infinite}
+.dot:nth-child(1){background:var(--blue)}
+.dot:nth-child(2){background:var(--yellow);animation-delay:.15s}
+.dot:nth-child(3){background:var(--blue);animation-delay:.3s}
+@keyframes bnc{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.loading-wrap p{font-size:14px;color:var(--muted)}
+
+/* INFO BANNER */
+.info-banner{background:var(--blue-light);border:1px solid #c0d4e8;border-radius:var(--radius-sm);padding:11px 15px;font-size:13px;color:var(--blue-dark);margin-bottom:1rem;line-height:1.6}
+
+/* FOOTER */
+footer{background:var(--blue);color:rgba(255,255,255,.8);text-align:center;padding:1.5rem 1rem;font-size:12px;margin-top:3rem}
+footer a{color:var(--yellow);text-decoration:none;font-weight:600}
+footer a:hover{text-decoration:underline}
+.footer-brand{font-size:16px;font-weight:700;color:#fff;margin-bottom:6px}
+.footer-brand span{color:var(--yellow)}
+
+.link-danger{background:none;border:none;color:var(--red);font-size:13px;cursor:pointer;font-family:var(--font);text-decoration:underline;padding:0}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#">
+    <div class="logo-mark">💬</div>
+    <div class="logo-text">
+      <div class="brand-name">Bacotan Workers</div>
+      <div class="brand-sub">CV ATS Generator</div>
+    </div>
+  </a>
+  <a class="ig-link" href="https://instagram.com/bacotanworkers" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    @bacotanworkers
+  </a>
+</header>
+
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-eyebrow">✦ ATS-Optimized · Powered by Gemini AI</div>
+    <h1>Build your <span>Professional CV</span><br>in minutes</h1>
+    <p>Fill in your details and get a keyword-rich, ATS-ready CV instantly — no sign up needed</p>
+    <div class="hero-pills">
+      <span class="pill">✓ ATS-friendly format</span>
+      <span class="pill">✓ Keyword-optimized</span>
+      <span class="pill">✓ Strong action verbs</span>
+      <span class="pill">✓ 1–2 page output</span>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="goTab(0)">1 · Personal</button>
+    <button class="tab-btn" onclick="goTab(1)">2 · Experience</button>
+    <button class="tab-btn" onclick="goTab(2)">3 · Education</button>
+    <button class="tab-btn" onclick="goTab(3)">4 · Skills</button>
+    <button class="tab-btn" onclick="goTab(4)">5 · Generate</button>
+  </div>
+  <div class="progress-track"><div class="progress-bar" id="prog" style="width:20%"></div></div>
+
+  <!-- TAB 0: PERSONAL -->
+  <div id="t0" class="tab-section active">
+    <div class="card">
+      <div class="card-head"><div class="head-dot"></div><h2>Personal Information</h2></div>
+      <div class="card-body">
+        <div class="row2">
+          <div class="field"><label>Full name <span class="req">*</span></label><input id="name" type="text" placeholder="JOHN DOE" oninput="this.value=this.value.toUpperCase()"></div>
+          <div class="field"><label>Target job role <span class="req">*</span></label><input id="job_role" type="text" placeholder="Data Analyst / Marketing Manager"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Email <span class="req">*</span></label><input id="email" type="email" placeholder="john@gmail.com"></div>
+          <div class="field"><label>Phone <span class="req">*</span></label><input id="phone" type="text" placeholder="+62 812 3456 7890"></div>
+        </div>
+        <div class="field"><label>Location <span class="req">*</span></label><input id="location" type="text" placeholder="Jakarta, Indonesia"></div>
+        <div class="row2">
+          <div class="field"><label>LinkedIn URL</label><input id="linkedin" type="text" placeholder="linkedin.com/in/johndoe"></div>
+          <div class="field"><label>Portfolio / GitHub</label><input id="portfolio" type="text" placeholder="github.com/johndoe"></div>
+        </div>
+        <div class="field">
+          <label>Professional summary <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+          <div class="hint">Leave blank — AI will write a compelling summary for you.</div>
+          <textarea id="summary" placeholder="Results-driven professional with 3+ years of experience..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row"><div></div><button class="btn-next" onclick="goTab(1)">Next: Experience →</button></div>
+  </div>
+
+  <!-- TAB 1: WORK EXPERIENCE -->
+  <div id="t1" class="tab-section">
+    <div class="card">
+      <div class="card-head"><div class="head-dot"></div><h2>Work Experience</h2></div>
+      <div class="card-body" id="work-list"></div>
+    </div>
+    <div class="btn-row"><button class="btn-back" onclick="goTab(0)">← Back</button><button class="btn-next" onclick="goTab(2)">Next: Education →</button></div>
+  </div>
+
+  <!-- TAB 2: EDUCATION -->
+  <div id="t2" class="tab-section">
+    <div class="card">
+      <div class="card-head"><div class="head-dot"></div><h2>Education</h2></div>
+      <div class="card-body">
+        <div class="row2">
+          <div class="field"><label>University / Institution <span class="req">*</span></label><input id="univ" type="text" placeholder="Universitas Indonesia"></div>
+          <div class="field"><label>Study period <span class="req">*</span></label><input id="study_period" type="text" placeholder="Sep 2019 – Jun 2023"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Degree <span class="req">*</span></label><input id="degree" type="text" placeholder="Bachelor of Science"></div>
+          <div class="field"><label>Major <span class="req">*</span></label><input id="major" type="text" placeholder="Information Systems"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>GPA</label><input id="gpa" type="text" placeholder="3.85 / 4.00"></div>
+          <div class="field"><label>Relevant coursework</label><input id="coursework" type="text" placeholder="Data Mining, Machine Learning, Statistics"></div>
+        </div>
+        <div class="field"><label>Academic achievements / awards</label><textarea id="achievements" placeholder="Dean's List 2021–2022&#10;1st Place — National Data Science Competition 2022"></textarea></div>
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn-back" onclick="goTab(1)">← Back</button><button class="btn-next" onclick="goTab(3)">Next: Skills →</button></div>
+  </div>
+
+  <!-- TAB 3: SKILLS -->
+  <div id="t3" class="tab-section">
+    <div class="card">
+      <div class="card-head"><div class="head-dot"></div><h2>Skills & Certifications</h2></div>
+      <div class="card-body">
+        <div class="field">
+          <label>Technical / Hard skills <span class="req">*</span></label>
+          <div class="hint">Comma-separated — e.g. Python, SQL, Tableau, Figma, Google Analytics</div>
+          <input id="hardskill" type="text" placeholder="Python, SQL, Excel, Power BI, Tableau, ...">
+        </div>
+        <div class="field">
+          <label>Soft skills <span class="req">*</span></label>
+          <div class="hint">Comma-separated — e.g. Leadership, Analytical Thinking, Communication</div>
+          <input id="softskill" type="text" placeholder="Project Management, Communication, Problem Solving, ...">
+        </div>
+        <div class="field"><label>Languages</label><input id="languages" type="text" placeholder="Native Indonesian; Professional English (TOEFL 600)"></div>
+        <div class="field">
+          <label>Certifications & Training</label>
+          <div class="hint">One per line. Include issuing organization and year.</div>
+          <textarea id="certs" placeholder="Google Data Analytics Certificate (Coursera, 2023)&#10;HubSpot Content Marketing (HubSpot Academy, 2022)"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn-back" onclick="goTab(2)">← Back</button><button class="btn-next" onclick="goTab(4)">Next: Generate →</button></div>
+  </div>
+
+  <!-- TAB 4: GENERATE -->
+  <div id="t4" class="tab-section">
+    <div class="info-banner">
+      Your data is processed by Gemini AI using an expert ATS CV writer prompt. Output is clean plain text — paste directly into Google Docs or Word.
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="head-dot"></div><h2>What the AI will generate</h2></div>
+      <div class="card-body ai-list">
+        <span><div class="ai-dot"></div>A tailored Professional Summary matched to your target job role</span>
+        <span><div class="ai-dot"></div>Work experience rewritten with strong action verbs and measurable results</span>
+        <span><div class="ai-dot"></div>ATS keywords injected throughout, relevant to your target role</span>
+        <span><div class="ai-dot"></div>Clean ATS-parseable plain text — no tables, no graphics</span>
+        <span><div class="ai-dot"></div>Concise output: 1 to 2 pages maximum</span>
+      </div>
+    </div>
+    <button class="btn-generate" id="gen-btn" onclick="generateCV()">⚡ Generate My ATS CV</button>
+
+    <div id="result-area" style="display:none;margin-top:1rem;">
+      <div class="result-wrap">
+        <div class="result-toolbar">
+          <span class="rlabel" id="result-label">Your ATS CV</span>
+          <div class="tbns">
+            <button class="dl-btn" onclick="downloadCV()">⬇ Download .txt</button>
+            <button class="copy-btn" onclick="copyCV()">Copy text</button>
+          </div>
+        </div>
+        <div id="loading-wrap" class="loading-wrap" style="display:none;">
+          <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+          <p id="status-msg">Generating your CV...</p>
+        </div>
+        <div id="cv-output" style="display:none;">
+          <div class="result-body" id="cv-text"></div>
+          <p class="result-note">Paste into Google Docs or Word · Recommended font: Calibri 11pt for best ATS compatibility</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin-top:1rem;">
+      <button class="btn-back" onclick="goTab(3)">← Back</button>
+      <button class="link-danger" onclick="resetForm()">🔄 Start over</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-brand">Bacotan <span>Workers</span></div>
+  CV ATS Generator · Follow us
+  <a href="https://instagram.com/bacotanworkers" target="_blank">@bacotanworkers</a>
+</footer>
+
+<script>
+let workCount = 0;
+
+const tabIds = ['t0','t1','t2','t3','t4'];
+const progs  = [20,40,60,80,100];
+
+function goTab(i) {
+  tabIds.forEach((id,idx) => document.getElementById(id).classList.toggle('active', idx===i));
+  document.querySelectorAll('.tab-btn').forEach((t,idx) => t.classList.toggle('active', idx===i));
+  document.getElementById('prog').style.width = progs[i] + '%';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function gv(id) { const e = document.getElementById(id); return e ? e.value.trim() : ''; }
+
+function addWork() {
+  if (workCount >= 4) return;
+  workCount++;
+  const n = workCount;
+  const div = document.createElement('div');
+  div.className = 'exp-block'; div.id = 'w' + n;
+  div.innerHTML = `
+    <div class="exp-label">Position ${n}${n<=2?' — required':' — optional'}</div>
+    ${n>1?`<button class="remove-btn" onclick="removeWork(${n})">×</button>`:''}
+    <div class="row2">
+      <div class="field"><label>Company / Organization${n<=2?' <span class="req">*</span>':''}</label>
+        <input id="wc${n}" type="text" placeholder="Gojek Indonesia"></div>
+      <div class="field"><label>Job title${n<=2?' <span class="req">*</span>':''}</label>
+        <input id="wt${n}" type="text" placeholder="Product Marketing Specialist"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Period</label>
+        <input id="wp${n}" type="text" placeholder="Mar 2022 – Present"></div>
+      <div class="field"><label>Employment type</label>
+        <input id="we${n}" type="text" placeholder="Full-time / Internship / Freelance"></div>
+    </div>
+    <div class="field">
+      <label>Key achievements &amp; responsibilities</label>
+      <div class="hint">Use numbers: "Increased sales by 30%", "Managed team of 8"</div>
+      <textarea id="wd${n}" placeholder="• Grew Instagram following by 45% in 6 months&#10;• Managed Rp 500M quarterly ad budget&#10;• Led cross-functional team of 6"></textarea>
+    </div>`;
+  const list = document.getElementById('work-list');
+  list.insertBefore(div, document.getElementById('add-work-btn'));
+  if (workCount >= 4) document.getElementById('add-work-btn').style.display = 'none';
+}
+
+function removeWork(n) {
+  document.getElementById('w'+n).remove();
+  workCount = Math.max(0, workCount-1);
+  document.getElementById('add-work-btn').style.display = 'flex';
+}
+
+function initWork() {
+  const list = document.getElementById('work-list');
+  list.innerHTML = '';
+  workCount = 0;
+  const btn = document.createElement('button');
+  btn.id = 'add-work-btn'; btn.className = 'add-btn';
+  btn.innerHTML = '+ Add another position (up to 4)';
+  btn.onclick = addWork;
+  list.appendChild(btn);
+  addWork();
+}
+
+function buildPrompt() {
+  const blocks = [];
+  for (let i=1; i<=4; i++) {
+    const c = gv('wc'+i); if (!c) continue;
+    blocks.push(`Position ${i}:\n  Company: ${c}\n  Title: ${gv('wt'+i)}\n  Period: ${gv('wp'+i)}\n  Type: ${gv('we'+i)}\n  Achievements:\n${gv('wd'+i)||'  (not provided)'}`);
+  }
+  const ll = [gv('linkedin')?`LinkedIn: ${gv('linkedin')}`:'', gv('portfolio')?`Portfolio: ${gv('portfolio')}`:''].filter(Boolean).join('\n');
+
+  return `You are an expert CV writer specializing in ATS-friendly resumes. Based on the following user data, generate a professional, well-structured CV optimized for Applicant Tracking Systems (ATS).
+
+REQUIREMENTS:
+- Clean professional plain-text format only
+- Section headings in ALL CAPS: PROFESSIONAL SUMMARY, WORK EXPERIENCE, EDUCATION, SKILLS, CERTIFICATIONS
+- Focus on measurable achievements — add numbers/percentages wherever reasonable
+- Use strong action verbs: Led, Developed, Increased, Managed, Delivered, Optimized, Spearheaded, Drove, Implemented, Streamlined
+- ATS readability: NO tables, NO columns, NO graphics, NO special chars except bullet (•) and pipe (|)
+- Keep it concise: 1–2 pages maximum
+- Bullet points (•) for all experience items
+- Tailor all wording to be keyword-rich for the TARGET JOB ROLE
+- If Professional Summary is blank, write a compelling 2–3 sentence summary
+- Output ONLY the CV — no preamble, no explanation, no markdown
+
+USER DATA:
+Full Name: ${gv('name')}
+Target Job Role: ${gv('job_role')}
+Email: ${gv('email')}
+Phone: ${gv('phone')}
+Location: ${gv('location')}
+${ll}
+Professional Summary: ${gv('summary')||'(generate from data below)'}
+
+WORK EXPERIENCE:
+${blocks.length ? blocks.join('\n\n') : '(not provided)'}
+
+EDUCATION:
+University: ${gv('univ')} | Period: ${gv('study_period')}
+Degree: ${gv('degree')} | Major: ${gv('major')}
+GPA: ${gv('gpa')||'not provided'}
+Coursework: ${gv('coursework')||'not provided'}
+Achievements: ${gv('achievements')||'none'}
+
+SKILLS:
+Technical: ${gv('hardskill')}
+Soft Skills: ${gv('softskill')}
+Languages: ${gv('languages')||'not provided'}
+
+CERTIFICATIONS: ${gv('certs')||'none'}
+
+OUTPUT FORMAT:
+${gv('name')}
+${gv('email')} | ${gv('phone')} | ${gv('location')}${gv('linkedin')?' | '+gv('linkedin'):''}${gv('portfolio')?' | '+gv('portfolio'):''}
+
+PROFESSIONAL SUMMARY
+[2-3 sentences]
+
+WORK EXPERIENCE
+[Company] | [Title] | [Period] | [Type]
+• [achievement]
+
+EDUCATION
+[Degree in Major] | [University] | [Period]
+GPA: ... | Coursework: ...
+
+SKILLS
+Technical: ... | Soft Skills: ... | Languages: ...
+
+CERTIFICATIONS
+• [Name] | [Issuer] | [Year]`;
+}
+
+async function generateCV() {
+  const name=gv('name'), email=gv('email'), role=gv('job_role');
+  if (!name||!email||!role) {
+    alert('Please fill in Full Name, Email, and Target Job Role.');
+    goTab(0); return;
+  }
+
+  document.getElementById('gen-btn').disabled = true;
+  document.getElementById('result-area').style.display = 'block';
+  document.getElementById('loading-wrap').style.display = 'block';
+  document.getElementById('cv-output').style.display = 'none';
+  setTimeout(()=>document.getElementById('result-area').scrollIntoView({behavior:'smooth'}),100);
+
+  const msgs=['Analyzing your profile...','Writing your professional summary...','Optimizing ATS keywords...','Structuring your experience...','Applying action verbs...','Finalizing your CV...'];
+  let mi=0;
+  const statusEl=document.getElementById('status-msg');
+  const iv=setInterval(()=>{statusEl.textContent=msgs[mi++%msgs.length];},1800);
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: buildPrompt() })
+    });
+
+    const data = await res.json();
+    clearInterval(iv);
+
+    if (!res.ok || data.error) throw new Error(data.error || `Server error ${res.status}`);
+
+    document.getElementById('cv-text').textContent = data.result;
+    document.getElementById('result-label').textContent = `CV — ${name} | ${role}`;
+    document.getElementById('loading-wrap').style.display = 'none';
+    document.getElementById('cv-output').style.display = 'block';
+
+  } catch(e) {
+    clearInterval(iv);
+    document.getElementById('cv-text').textContent = '❌ Error: ' + e.message + '\n\nPlease try again in a moment.';
+    document.getElementById('loading-wrap').style.display = 'none';
+    document.getElementById('cv-output').style.display = 'block';
+  }
+
+  document.getElementById('gen-btn').disabled = false;
+}
+
+function copyCV() {
+  navigator.clipboard.writeText(document.getElementById('cv-text').textContent).then(()=>{
+    const btn=document.querySelector('.copy-btn');
+    btn.textContent='✓ Copied!';
+    setTimeout(()=>btn.textContent='Copy text',2500);
+  });
+}
+
+function downloadCV() {
+  const name = gv('name').replace(/\s+/g,'-')||'CV';
+  const blob = new Blob([document.getElementById('cv-text').textContent],{type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${name}-ATS-CV.txt`;
+  a.click();
+}
+
+function resetForm() {
+  if(!confirm('Start over? All data will be cleared.')) return;
+  document.querySelectorAll('input,textarea').forEach(el=>el.value='');
+  document.getElementById('result-area').style.display='none';
+  initWork(); goTab(0);
+}
+
+initWork();
+</script>
+</body>
+</html>
